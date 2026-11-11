@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabiat Go'zalligi - Ona Tabiatni Asraylik</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Montserrat -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        },
+                        earth: {
+                            100: '#f5f2eb',
+                            800: '#3e3223',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Glassmorphism Styles */
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Animated Blob Background */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Hero Wave Background Gradient */
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(6, 78, 59, 0.9) 0%, rgba(5, 150, 105, 0.85) 50%, rgba(16, 185, 129, 0.75) 100%),
+                        url('https://images.unsplash.com/photo-1511497584788-8767610419ea?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glass border-b border-emerald-100/20 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-emerald-600 to-green-400 flex items-center justify-center text-white shadow-lg shadow-emerald-600/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid font-bold text-xl fa-leaf"></i>
+                    </div>
+                    <span class="font-heading font-extrabold text-xl sm:text-2xl tracking-tight bg-gradient-to-r from-emerald-700 to-green-500 dark:from-emerald-400 dark:to-green-300 bg-clip-text text-transparent">
+                        TabiatGo
+                    </span>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-8 font-medium text-slate-700 dark:text-slate-200">
+                    <a href="#about" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ekotizim</a>
+                    <a href="#gallery" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Galereya</a>
+                    <a href="#calculator" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Ekologik Iz</a>
+                    <a href="#quiz" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Viktorina</a>
+                    <a href="#facts" class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Faktlar</a>
+                </nav>
+
+                <!-- Actions: Theme Switcher & Mobile Menu Button -->
+                <div class="flex items-center gap-4">
+                    <button id="themeToggleBtn" aria-label="Mavzuni o'zgartirish" class="p-2.5 rounded-full bg-slate-200/60 dark:bg-slate-800 text-slate-700 dark:text-yellow-400 hover:ring-2 hover:ring-emerald-500 transition-all">
+                        <i id="themeIcon" class="fa-solid fa-moon text-lg"></i>
+                    </button>
+
+                    <!-- Mobile Menu Trigger -->
+                    <button id="mobileMenuBtn" aria-label="Menyu" class="md:hidden p-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-emerald-100/50 dark:hover:bg-slate-800">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Nav -->
+        <div id="mobileNav" class="hidden md:hidden glass border-t border-slate-200/50 dark:border-slate-800/50 px-4 pt-3 pb-6 space-y-3">
+            <a href="#about" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 font-medium">Ekotizim</a>
+            <a href="#gallery" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 font-medium">Galereya</a>
+            <a href="#calculator" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 font-medium">Ekologik Iz</a>
+            <a href="#quiz" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 font-medium">Viktorina</a>
+            <a href="#facts" class="block py-2 text-slate-700 dark:text-slate-200 hover:text-emerald-600 font-medium">Faktlar</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+        <!-- Hero Section -->
+        <section class="relative min-h-[90vh] flex items-center justify-center hero-bg text-white overflow-hidden py-20 px-4">
+            <!-- Floating Decorative Particles -->
+            <div class="absolute inset-0 pointer-events-none opacity-20">
+                <div class="absolute top-1/4 left-10 w-32 h-32 bg-emerald-300 rounded-full blur-3xl animate-float"></div>
+                <div class="absolute bottom-1/3 right-12 w-48 h-48 bg-green-400 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+            </div>
+
+            <div class="max-w-4xl mx-auto text-center z-10 space-y-8">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-900/60 border border-emerald-400/30 text-emerald-300 text-sm font-medium backdrop-blur-md">
+                    <i class="fa-solid fa-seedling text-emerald-400"></i> Ona tabiat bizning uyimiz
+                </div>
+                
+                <h1 class="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+                    Tabiat Go'zalligini Birgalikda <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 via-green-300 to-teal-100">Asraylik</span>
+                </h1>
+                
+                <p class="text-lg sm:text-xl text-emerald-100 max-w-2xl mx-auto leading-relaxed font-light">
+                    O'simlik va hayvonot olami, musaffo havo va tiniq suvlar — bu kelajak avlod uchun bebaho xazina. Ekologik muvozanatni saqlash har birimizning burchimizdir.
+                </p>
+
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+                    <a href="#gallery" class="w-full sm:w-auto px-8 py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-semibold rounded-2xl shadow-lg shadow-emerald-900/40 hover:shadow-emerald-500/30 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-compass"></i> Boshlash va O'rganish
+                    </a>
+                    <a href="#quiz" class="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 text-white border border-white/30 font-semibold rounded-2xl backdrop-blur-md transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-clipboard-question"></i> Interaktiv Viktorina
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Eco System Overview Section -->
+        <section id="about" class="py-24 px-4 max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-xs uppercase font-bold tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">Ekotizim Haqida</h2>
+                <p class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Tabiat Muvozanati va Hayot Manbai</p>
+                <div class="w-16 h-1 bg-emerald-500 mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-3xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group border-emerald-500/10">
+                    <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-tree"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3 text-slate-900 dark:text-white">O'rmonlar va Kislorod</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                        O'rmonlar sayyoramizning "o'pkalari" hisoblanadi. Ular atmosferadan karbonat angidridni yutib, biz nafas oladigan toza kislorod ishlab chiqaradi.
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-3xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group border-emerald-500/10">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-droplet"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3 text-slate-900 dark:text-white">Suv Havzalari</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                        Daryolar, ko'llar va okeanlar barcha jonli mavjudotlarning asosi hisoblanadi. Suv resurslarini ifloslanishdan saqlash hayotiy zaruratdir.
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-3xl hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group border-emerald-500/10">
+                    <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-paw"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3 text-slate-900 dark:text-white">Bioxilma-xillik</h3>
+                    <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
+                        Har bir hayvon va o'simlik turi ekologik zanjirda o'z o'rniga ega. Bir turning yo'qolishi butun ekotizimga jiddiy ta'sir ko'rsatishi mumkin.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filterable Nature Gallery -->
+        <section id="gallery" class="py-20 bg-slate-100/70 dark:bg-slate-800/50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <h2 class="text-xs uppercase font-bold tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">Interaktiv Galereya</h2>
+                    <p class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Tabiat Wonders va Mo'jizalari</p>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2">Kategoriyalar bo'yicha saralang va batafsil ma'lumot oling.</p>
+                </div>
+
+                <!-- Category Filter Tabs -->
+                <div class="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12" id="galleryTabs">
+                    <button data-category="all" class="tab-btn px-5 py-2.5 rounded-full font-medium text-sm transition-all bg-emerald-600 text-white shadow-md shadow-emerald-600/30">
+                        Barchasi
+                    </button>
+                    <button data-category="plants" class="tab-btn px-5 py-2.5 rounded-full font-medium text-sm transition-all bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-600">
+                        O'simliklar
+                    </button>
+                    <button data-category="animals" class="tab-btn px-5 py-2.5 rounded-full font-medium text-sm transition-all bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-600">
+                        Hayvonot Olami
+                    </button>
+                    <button data-category="mountains" class="tab-btn px-5 py-2.5 rounded-full font-medium text-sm transition-all bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-600">
+                        Tog'lar va Suvlar
+                    </button>
+                </div>
+
+                <!-- Gallery Cards Grid -->
+                <div id="galleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Cards populated via Vanilla JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Daily Eco Fact Generator -->
+        <section id="facts" class="py-20 max-w-5xl mx-auto px-4">
+            <div class="glass-card rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden border border-emerald-500/20 shadow-xl">
+                <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
+                <i class="fa-solid fa-lightbulb text-4xl text-amber-500 mb-6 animate-bounce"></i>
+                <h2 class="font-heading text-2xl sm:text-3xl font-bold mb-4 text-slate-900 dark:text-white">Kunlik Tabiat Faktlari</h2>
+                <p id="factText" class="text-lg sm:text-xl text-slate-700 dark:text-slate-200 min-h-[80px] flex items-center justify-center font-medium italic px-4">
+                    "Bir dona yetuk daraxt bir yilda taxminan 22 kg karbonat angidridni yutadi."
+                </p>
+                <button id="nextFactBtn" class="mt-6 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-2xl transition-all shadow-md flex items-center gap-2 mx-auto">
+                    <i class="fa-solid fa-arrows-rotate"></i> Yangi Fakt Olish
+                </button>
+            </div>
+        </section>
+
+        <!-- Carbon Footprint Calculator Section -->
+        <section id="calculator" class="py-20 bg-emerald-900/5 dark:bg-slate-800/30 border-y border-emerald-500/10">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-xs uppercase font-bold tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">Kalkulyator</h2>
+                    <p class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Ekologik Iz Izlanishi</p>
+                    <p class="text-slate-600 dark:text-slate-400 mt-2">Kundalik odatlaringiz orqali tabiatga ta'siringizni baholang.</p>
+                </div>
+
+                <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-lg">
+                    <form id="ecoCalcForm" class="space-y-6">
+                        <!-- Transport -->
+                        <div>
+                            <label class="block font-semibold text-slate-800 dark:text-slate-200 mb-2">1. Transport turidan qanchalik ko'p foydalanasiz?</label>
+                            <select id="transportSelect" class="w-full p-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option value="1">Ko'pincha piyoda yoki velosipedda yuraman</option>
+                                <option value="2">Jamoat transportidan foydalanaman (Avtobus, Metro)</option>
+                                <option value="3">Shaxsiy avtomobildan kunlik foydalanaman</option>
+                            </select>
+                        </div>
+
+                        <!-- Plastics & Recycling -->
+                        <div>
+                            <label class="block font-semibold text-slate-800 dark:text-slate-200 mb-2">2. Plastik idishlar va sumkalardan foydalanish darajangiz?</label>
+                            <select id="plasticSelect" class="w-full p-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option value="1">Iloji boricha kamroq, mato xalta ishlataman</option>
+                                <option value="2">Ba'zan plastik xaltalar olaman</option>
+                                <option value="3">Har kuni ko'plab bir marta ishlatiladigan plastiklar ishlataman</option>
+                            </select>
+                        </div>
+
+                        <!-- Energy Saving -->
+                        <div>
+                            <label class="block font-semibold text-slate-800 dark:text-slate-200 mb-2">3. Uyda elektr energiyasini tejamkorlik bilan ishlatasizmi?</label>
+                            <select id="energySelect" class="w-full p-3.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 outline-none">
+                                <option value="1">Har doim keraksiz chiroqlarni o'chiraman, LED lampalar ishlataman</option>
+                                <option value="2">Ba'zan e'tiborsiz qoldiraman</option>
+                                <option value="3">Kamdan-kam tejayman</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg transition-all">
+                            Natijani Hisoblash
+                        </button>
+                    </form>
+
+                    <!-- Calculator Result Box -->
+                    <div id="calcResult" class="hidden mt-8 p-6 rounded-2xl text-center border">
+                        <!-- Result injected via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Eco Quiz Section -->
+        <section id="quiz" class="py-20 max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-xs uppercase font-bold tracking-widest text-emerald-600 dark:text-emerald-400 mb-2">Bilimingizni Sinang</h2>
+                <p class="font-heading text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white">Tabiat Viktorinasi</p>
+            </div>
+
+            <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-xl border border-emerald-500/10">
+                <div id="quizContainer">
+                    <div class="flex justify-between items-center mb-6">
+                        <span id="quizProgress" class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">Savol 1 / 5</span>
+                        <span id="quizScore" class="text-sm font-semibold text-slate-500 dark:text-slate-400">Ball: 0</span>
+                    </div>
+
+                    <h3 id="quizQuestion" class="font-heading text-xl sm:text-2xl font-bold mb-6 text-slate-900 dark:text-white">
+                        Savol yuklanmoqda...
+                    </h3>
+
+                    <div id="quizOptions" class="space-y-3">
+                        <!-- Dynamic Options Buttons -->
+                    </div>
+
+                    <div id="quizFeedback" class="hidden mt-6 p-4 rounded-xl text-center font-medium"></div>
+
+                    <button id="nextQuestionBtn" class="hidden mt-6 w-full py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-700 transition-all">
+                        Keyingi Savol
+                    </button>
+                </div>
+
+                <!-- Quiz Completion Screen -->
+                <div id="quizEndScreen" class="hidden text-center py-8">
+                    <i class="fa-solid fa-trophy text-5xl text-amber-400 mb-4"></i>
+                    <h3 class="font-heading text-2xl font-bold text-slate-900 dark:text-white mb-2">Tabriklaymiz!</h3>
+                    <p id="finalScoreText" class="text-lg text-slate-600 dark:text-slate-300 mb-6"></p>
+                    <button id="restartQuizBtn" class="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-xl transition-all">
+                        Qayta Boshlash
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal Dialog for Item Details -->
+    <div id="detailModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-card bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button id="closeModalBtn" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-emerald-500 hover:text-white transition-all flex items-center justify-center">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div id="modalContent">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <div class="flex justify-center items-center gap-2 text-xl font-bold text-white">
+                <i class="fa-solid fa-leaf text-emerald-500"></i> TabiatGo
+            </div>
+            <p class="max-w-md mx-auto text-sm text-slate-400">
+                Ona tabiatni asrash har birimizning qo'limizda. Kelajak uchun ekologik madaniyatni birgalikda oshiraylik.
+            </p>
+            <p class="text-xs text-slate-500 pt-4">
+                &copy; 2026 TabiatGo Portal. Barcha huquqlar himoyalangan.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Vanilla JavaScript Implementation -->
+    <script>
+        // --- DATA STORE ---
+        const galleryData = [
+            {
+                id: 1,
+                title: "Tyan-Shan Tog'lari",
+                category: "mountains",
+                image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
+                short: "Markaziy Osiyodagi eng salobatli va go'zal tog' tizimlaridan biri.",
+                description: "Tyan-Shan tog'lari o'zining noyob florasi, musaffo muzliklari va baland choqqilari bilan mashhur. Ular hududiy ekotizim va suv manbalari uchun juda muhim ro'ynaydi."
+            },
+            {
+                id: 2,
+                title: "Amur Yo'lbarsi",
+                category: "animals",
+                image: "https://images.unsplash.com/photo-1561731216-c3a4d99437d5?auto=format&fit=crop&w=800&q=80",
+                short: "Yo'qolib borayotgan va muhofazaga olingan eng yirik yirtqich mushuksimon.",
+                description: "Amur yo'lbarsi asosan o'rmon va tayga hududlarida yashaydi. Hozirda ularning soni kamayib ketgani sababli xalqaro Qizil Kitobga kiritilgan."
+            },
+            {
+                id: 3,
+                title: "Lotus Gullari",
+                category: "plants",
+                image: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=800&q=80",
+                short: "Tozalik va poklik ramzi hisoblangan suv o'simligi.",
+                description: "Lotus guli suv yuzida barg yozib, juda go'zal gullaydi. Uning ildizlari loyqa suv tubida bo'lsa ham, guli har doim tops-toza bo'lib ochiladi."
+            },
+            {
+                id: 4,
+                title: "Amazonka O'rmonlari",
+                category: "mountains",
+                image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80",
+                short: "Yerdagi eng katta tropik o'rmon va biologik xilma-xillik markazi.",
+                description: "Amazonka nam tropik o'rmonlari sayyoramizdagi barcha o'simlik va hayvon turlarining 10% dan ortig'iga uy hisoblanadi."
+            },
+            {
+                id: 5,
+                title: "Kiyik (Buxoro Bug'usi)",
+                category: "animals",
+                image: "https://images.unsplash.com/photo-1484406566174-9da000fda645?auto=format&fit=crop&w=800&q=80",
+                short: "Noyob va muhofaza qilinadigan to'qay bug'usi.",
+                description: "Buxoro bug'usi Markaziy Osiyo to'qayzorlarining noyob vakilidir. Tabiatni muhofaza qilish sa'y-harakatlari evaziga ularning populyatsiyasi qayta tiklanmoqda."
+            },
+            {
+                id: 6,
+                title: "Sekvoya Daraxti",
+                category: "plants",
+                image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80",
+                short: "Dunyodagi eng baland va eng uzoq umr ko'ruvchi daraxtlar.",
+                description: "Sekvoyalar balandligi 100 metrdan oshadigan va bir necha ming yil yashay oladigan ulkan daraxtlar hisoblanadi."
+            }
+        ];
+
+        const ecoFacts = [
+            "Bir dona yetuk daraxt bir yilda taxminan 22 kg karbonat angidridni yutadi va 4 kishilik oilaga yetadigan kislorod beradi.",
+            "Plastik idishning tabiatda to'liq parchalanib ketishi uchun 450 yildan ortiq vaqt talab etiladi.",
+            "Okeanlardagi marjon qoyalari barcha dengiz jonliqlarining 25% qismiga boshpana beradi.",
+            "Qog'ozni qayta ishlash orqali har bir tonna qog'oz uchun 17 ta daraxt kesilishidan saqlab qolinadi.",
+            "Asalari turlari dunyo bo'ylab insonlar iste'mol qiladigan ekinlarning 1/3 qismini changlatadi."
+        ];
+
+        const quizQuestions = [
+            {
+                q: "Plastik idish tabiatda to'liq parchalanishi uchun qancha vaqt ketadi?",
+                options: ["10-20 yil", "50-100 yil", "400 yildan ortiq", "Parchalanmaydi"],
+                correct: 2
+            },
+            {
+                q: "Yer sharining necha foiz qismini suv egallaydi?",
+                options: ["50%", "71%", "85%", "60%"],
+                correct: 1
+            },
+            {
+                q: "Qaysi o'simlik turi dunyodagi eng tez o'sadigan o'simlik hisoblanadi?",
+                options: ["Bambuk", "Evalipt", "Qayin", "Qarag'ay"],
+                correct: 0
+            },
+            {
+                q: "Atmosferadagi kislorodning asosiy qismini nima ishlab chiqaradi?",
+                options: ["Maysazorlar", "Dengiz fitoplanktonlari va o'rmonlar", "Buloqlar", "Tog'lar"],
+                correct: 1
+            },
+            {
+                q: "Chiqindilarni saralashning asosiy foydasi nimada?",
+                options: ["Faqat joy tejash", "Resurslarni qayta ishlash va tabiatni muhofaza qilish", "Chiroyli ko'rinish", "Hech qanday foydasi yo'q"],
+                correct: 1
+            }
+        ];
+
+        // --- DOM Elements ---
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileNav = document.getElementById('mobileNav');
+        const galleryGrid = document.getElementById('galleryGrid');
+        const galleryTabs = document.getElementById('galleryTabs');
+        const factText = document.getElementById('factText');
+        const nextFactBtn = document.getElementById('nextFactBtn');
+        const detailModal = document.getElementById('detailModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+
+        // Calculator DOM
+        const ecoCalcForm = document.getElementById('ecoCalcForm');
+        const calcResult = document.getElementById('calcResult');
+
+        // Quiz DOM
+        const quizQuestion = document.getElementById('quizQuestion');
+        const quizOptions = document.getElementById('quizOptions');
+        const quizProgress = document.getElementById('quizProgress');
+        const quizScore = document.getElementById('quizScore');
+        const quizFeedback = document.getElementById('quizFeedback');
+        const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+        const quizContainer = document.getElementById('quizContainer');
+        const quizEndScreen = document.getElementById('quizEndScreen');
+        const finalScoreText = document.getElementById('finalScoreText');
+        const restartQuizBtn = document.getElementById('restartQuizBtn');
+
+        // --- State Variables ---
+        let currentQuizIndex = 0;
+        let quizScoreCount = 0;
+
+        // --- DARK / LIGHT THEME TOGGLE ---
+        themeToggleBtn.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            themeIcon.className = isDark ? 'fa-solid fa-sun text-yellow-400 text-lg' : 'fa-solid fa-moon text-slate-700 text-lg';
+        });
+
+        // --- MOBILE MENU ---
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileNav.classList.toggle('hidden');
+        });
+
+        // --- RENDER GALLERY CARDS ---
+        function renderGallery(filter = 'all') {
+            galleryGrid.innerHTML = '';
+            const filteredData = filter === 'all' ? galleryData : galleryData.filter(item => item.category === filter);
+
+            filteredData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-3xl overflow-hidden hover:shadow-2xl transition-all duration-300 group flex flex-col border border-emerald-500/10';
+                card.innerHTML = `
+                    <div class="relative overflow-hidden h-52">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+                        <span class="absolute top-4 right-4 bg-emerald-900/70 backdrop-blur-md text-emerald-200 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold">
+                            ${item.category}
+                        </span>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="font-heading font-bold text-xl mb-2 text-slate-900 dark:text-white">${item.title}</h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm flex-grow mb-4 line-clamp-2">${item.short}</p>
+                        <button onclick="openModal(${item.id})" class="w-full py-2.5 rounded-xl border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-600 hover:text-white transition-all font-semibold text-sm">
+                            Batafsil O'qish
+                        </button>
+                    </div>
+                `;
+                galleryGrid.appendChild(card);
+            });
+        }
+
+        // --- GALLERY FILTER TABS ---
+        galleryTabs.addEventListener('click', (e) => {
+            if (e.target.classList.contains('tab-btn')) {
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.className = 'tab-btn px-5 py-2.5 rounded-full font-medium text-sm transition-all bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-emerald-50 dark:hover:bg-slate-600';
+                });
+                e.target.className = 'tab-btn px-5 py-2.5 rounded-full font-medium text-sm transition-all bg-emerald-600 text-white shadow-md shadow-emerald-600/30';
+                renderGallery(e.target.dataset.category);
+            }
+        });
+
+        // --- MODAL DIALOG ---
+        window.openModal = function(id) {
+            const item = galleryData.find(i => i.id === id);
+            if (!item) return;
+
+            modalContent.innerHTML = `
+                <img src="${item.image}" alt="${item.title}" class="w-full h-64 object-cover rounded-2xl mb-6 shadow-md" />
+                <h3 class="font-heading text-2xl font-bold mb-3 text-slate-900 dark:text-white">${item.title}</h3>
+                <p class="text-slate-600 dark:text-slate-300 leading-relaxed text-base mb-6">${item.description}</p>
+                <div class="flex justify-end">
+                    <button onclick="closeModal()" class="px-6 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-xl font-semibold hover:bg-slate-300 transition-all">
+                        Yopish
+                    </button>
+                </div>
+            `;
+            detailModal.classList.remove('opacity-0', 'pointer-events-none');
+        };
+
+        function closeModal() {
+            detailModal.classList.add('opacity-0', 'pointer-events-none');
+        }
+        closeModalBtn.addEventListener('click', closeModal);
+        detailModal.addEventListener('click', (e) => {
+            if (e.target === detailModal) closeModal();
+        });
+
+        // --- DAILY FACT GENERATOR ---
+        nextFactBtn.addEventListener('click', () => {
+            factText.style.opacity = '0';
+            setTimeout(() => {
+                const randomFact = ecoFacts[Math.floor(Math.random() * ecoFacts.length)];
+                factText.textContent = `"${randomFact}"`;
+                factText.style.opacity = '1';
+            }, 200);
+        });
+
+        // --- CARBON FOOTPRINT CALCULATOR ---
+        ecoCalcForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const transport = parseInt(document.getElementById('transportSelect').value);
+            const plastic = parseInt(document.getElementById('plasticSelect').value);
+            const energy = parseInt(document.getElementById('energySelect').value);
+
+            const totalScore = transport + plastic + energy;
+            calcResult.classList.remove('hidden', 'bg-emerald-100', 'bg-yellow-100', 'bg-red-100', 'border-emerald-300', 'border-yellow-300', 'border-red-300');
+
+            if (totalScore <= 4) {
+                calcResult.className = "mt-8 p-6 rounded-2xl text-center border bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200";
+                calcResult.innerHTML = `
+                    <h4 class="font-bold text-xl mb-2">Ajoyib! Ekologik Iz Past! 🌱</h4>
+                    <p class="text-sm">Siz tabiatni asrashga katta hissa qo'shmoqdasiz. Shu tarzda davom eting!</p>
+                `;
+            } else if (totalScore <= 6) {
+                calcResult.className = "mt-8 p-6 rounded-2xl text-center border bg-yellow-50 dark:bg-yellow-950/40 border-yellow-300 dark:border-yellow-800 text-yellow-900 dark:text-yellow-200";
+                calcResult.innerHTML = `
+                    <h4 class="font-bold text-xl mb-2">O'rtacha Daraja ⚠️</h4>
+                    <p class="text-sm">Siz ekologiyaga e'tibor berasiz, lekin bir marta ishlatiladigan plastik va energiyani terashda yana-da yaxshiroq natija ko'rsatishingiz mumkin.</p>
+                `;
+            } else {
+                calcResult.className = "mt-8 p-6 rounded-2xl text-center border bg-red-50 dark:bg-red-950/40 border-red-300 dark:border-red-800 text-red-900 dark:text-red-200";
+                calcResult.innerHTML = `
+                    <h4 class="font-bold text-xl mb-2">Yuqori Ekologik Iz 🚨</h4>
+                    <p class="text-sm">Kundalik odatlaringiz tabiatga ta'sir o'tkazmoqda. Jamoat transporti va qayta ishlanadigan mahsulotlardan foydalanishni tavsiya etamiz.</p>
+                `;
+            }
+        });
+
+        // --- ECO QUIZ IMPLEMENTATION ---
+        function loadQuizQuestion() {
+            quizFeedback.classList.add('hidden');
+            nextQuestionBtn.classList.add('hidden');
+
+            const currentQ = quizQuestions[currentQuizIndex];
+            quizProgress.textContent = `Savol ${currentQuizIndex + 1} / ${quizQuestions.length}`;
+            quizScore.textContent = `Ball: ${quizScoreCount}`;
+            quizQuestion.textContent = currentQ.q;
+
+            quizOptions.innerHTML = '';
+            currentQ.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-700 transition-all text-slate-800 dark:text-slate-100 font-medium';
+                btn.textContent = `${idx + 1}. ${opt}`;
+                btn.onclick = () => selectQuizOption(idx);
+                quizOptions.appendChild(btn);
+            });
+        }
+
+        function selectQuizOption(selectedIdx) {
+            const currentQ = quizQuestions[currentQuizIndex];
+            const buttons = quizOptions.querySelectorAll('button');
+
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (selectedIdx === currentQ.correct) {
+                quizScoreCount += 20;
+                buttons[selectedIdx].classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
+                quizFeedback.textContent = "To'g'ri javob! Barakalla!";
+                quizFeedback.className = "mt-6 p-4 rounded-xl text-center font-medium bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200";
+            } else {
+                buttons[selectedIdx].classList.add('bg-red-500', 'text-white', 'border-red-500');
+                buttons[currentQ.correct].classList.add('bg-emerald-500', 'text-white', 'border-emerald-500');
+                quizFeedback.textContent = `Noto'g'ri. To'g'ri javob: ${currentQ.options[currentQ.correct]}`;
+                quizFeedback.className = "mt-6 p-4 rounded-xl text-center font-medium bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-200";
+            }
+
+            quizScore.textContent = `Ball: ${quizScoreCount}`;
+            quizFeedback.classList.remove('hidden');
+            nextQuestionBtn.classList.remove('hidden');
+        }
+
+        nextQuestionBtn.addEventListener('click', () => {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                loadQuizQuestion();
+            } else {
+                showQuizEnd();
+            }
+        });
+
+        function showQuizEnd() {
+            quizContainer.classList.add('hidden');
+            quizEndScreen.classList.remove('hidden');
+            finalScoreText.textContent = `Siz ${quizQuestions.length * 20} balldan ${quizScoreCount} ball to'pladingiz!`;
+        }
+
+        restartQuizBtn.addEventListener('click', () => {
+            currentQuizIndex = 0;
+            quizScoreCount = 0;
+            quizEndScreen.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            loadQuizQuestion();
+        });
+
+        // Initialize App
+        window.onload = function() {
+            renderGallery();
+            loadQuizQuestion();
+        };
+    </script>
+</body>
+</html>
